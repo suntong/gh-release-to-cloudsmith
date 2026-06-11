@@ -16,15 +16,25 @@ Automated tool to download the latest release packages (.deb, .rpm, .apk) from a
 
 ### Using Docker (Recommended)
 
+You can use the automatically built image from GHCR (recommended) or build it locally.
+
+#### Using GHCR Image
+
+```bash
+docker run --rm \
+  -e GITHUB_REPO="suntong/process_hog_watcher" \
+  -e CLOUDSMITH_API_KEY="your-cloudsmith-api-key" \
+  ghcr.io/suntong/gh-release-to-cloudsmith:latest
+```
+
+#### Local Build
+
 ```bash
 # Build the Docker image
 ./docker-wrapper.sh build
 
 # Run the sync
 ./docker-wrapper.sh run -r suntong/process_hog_watcher -k your-cloudsmith-api-key
-
-# Or build and run in one step
-./docker-wrapper.sh build-run -r suntong/process_hog_watcher -k your-cloudsmith-api-key
 ```
 
 ### Using Shell Script
@@ -223,7 +233,30 @@ jobs:
 docker run --rm \
   -e GITHUB_REPO=suntong/process_hog_watcher \
   -e CLOUDSMITH_API_KEY=$CLOUDSMITH_API_KEY \
-  github-to-cloudsmith:latest
+  ghcr.io/suntong/gh-release-to-cloudsmith:latest
+```
+
+## GitHub Container Registry (GHCR)
+
+This repository automatically builds and pushes Docker images to GHCR.
+
+### Verifying Images and Tags
+
+To verify the available images and tags (similar to Docker Hub):
+
+1.  Navigate to the repository on GitHub: [suntong/gh-release-to-cloudsmith](https://github.com/suntong/gh-release-to-cloudsmith)
+2.  On the right-hand sidebar, look for the **Packages** section.
+3.  Click on the **gh-release-to-cloudsmith** package.
+4.  This page lists all available tags, OS/architectures, and download statistics.
+
+### Using Specific Versions
+
+Instead of `latest`, you can use specific version tags or the short commit SHA:
+
+```bash
+docker pull ghcr.io/suntong/gh-release-to-cloudsmith:v1.0.0
+# OR
+docker pull ghcr.io/suntong/gh-release-to-cloudsmith:sha-7e2a9b1
 ```
 
 ## Troubleshooting
